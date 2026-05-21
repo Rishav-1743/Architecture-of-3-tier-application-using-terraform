@@ -1,11 +1,12 @@
-<img width="1536" height="1024" alt="f681d9ed-2078-47ec-bc5c-22a7d8f53dab" src="https://github.com/user-attachments/assets/7a54834a-c352-4a4d-b16d-b40cbb41ba28" /># Architecture-of-3-tier-application-using-terraform
+
+# Architecture-of-3-tier-application-using-terraform
 This project provisions a highly available and secure 3-tier architecture on AWS using Terraform.  The infrastructure includes:  Custom VPC Public and Private Subnets across multiple Availability Zones Internet Gateway NAT Gateway Route Tables Security Groups Frontend, Backend, and Database EC2 instances
 
-
-
-
 **Architecture Overview**
+
 The architecture is divided into three layers:
+
+<img width="1536" height="1024" alt="f681d9ed-2078-47ec-bc5c-22a7d8f53dab" src="https://github.com/user-attachments/assets/7a54834a-c352-4a4d-b16d-b40cbb41ba28" />
 
 **1. Frontend Tier (Presentation Layer)**
 Two EC2 instances deployed in public subnets
