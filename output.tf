@@ -32,7 +32,7 @@ output "private_db_subnet_ids" {
 }
 
 #output of Internet_gateway
-output "Internet_gateway_ID" {
+output "ID_of_Internet_gateway" {
     description = "ID of Internet Gateway"
     value       =aws_internet_gateway.igw.id
   
@@ -81,7 +81,7 @@ output "db_sg_id" {
 }
 
 #Frontend EC2 Instances
-output "frontend_instance-id" {
+output "frontend_instance_id" {
     description = "ID's of frontend EC2 Instances"
     value       =aws_instance.frontend[*].id
   
