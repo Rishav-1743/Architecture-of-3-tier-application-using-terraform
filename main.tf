@@ -1,16 +1,16 @@
 resource "aws_vpc" "my_app" {
-    cidr_block = "10.0.0.0/16"
+    cidr_block = var.vpc_cidr
 
     tags = {
-    Name = "three tier vpc"
+    Name = var.vpc_name
     }
 }
 
 #Public subnet for Frontend
 resource "aws_subnet" "Web_1" {
     vpc_id = aws_vpc.my_app.id
-    cidr_block = "10.0.1.0/24"
-    availability_zone = "ap-south-1a"
+    cidr_block = var.web_1_cidr
+    availability_zone = var.web_1_az
     map_public_ip_on_launch = true
 
     tags = {
@@ -21,8 +21,8 @@ resource "aws_subnet" "Web_1" {
 
 resource "aws_subnet" "Web_2" {
     vpc_id = aws_vpc.my_app.id
-    cidr_block = "10.0.2.0/24"
-    availability_zone  = "ap-south-1b"
+    cidr_block = var.web_2_cidr
+    availability_zone  = var.web_2_az
      map_public_ip_on_launch = true
 
     tags = {
@@ -34,9 +34,9 @@ resource "aws_subnet" "Web_2" {
 #Private subnet for backend
 resource "aws_subnet" "app_1" {
     vpc_id = aws_vpc.my_app.id
-    cidr_block = "10.0.3.0/24"
-    availability_zone = "ap-south-1a"
-    map_public_ip_on_launch = false
+    cidr_block = var.app_1_cidr
+    availability_zone = var.app_1_az
+    map_public_ip_on_launch = true
 
 
     tags = {
@@ -47,9 +47,9 @@ resource "aws_subnet" "app_1" {
 
 resource "aws_subnet" "app_2" {
     vpc_id = aws_vpc.my_app.id
-    cidr_block = "10.0.4.0/24"
-    availability_zone = "ap-south-1b"
-  map_public_ip_on_launch = false
+    cidr_block = var.app_2_cidr
+    availability_zone = var.app_2_az
+  map_public_ip_on_launch = true
 
     tags = {
       Name ="Private_subnet_2"
@@ -60,9 +60,9 @@ resource "aws_subnet" "app_2" {
 #Private subnet for DB servers
 resource "aws_subnet" "db_1" {
     vpc_id = aws_vpc.my_app.id
-    cidr_block = "10.0.5.0/24"
-    availability_zone = "ap-south-1a"
-    map_public_ip_on_launch = false
+    cidr_block = var.db_1_cidr
+    availability_zone = var.db_1_az
+    map_public_ip_on_launch = true
 
     tags = {
       Name ="db_subnet_1"
@@ -72,9 +72,9 @@ resource "aws_subnet" "db_1" {
 
 resource "aws_subnet" "db_2" {
     vpc_id = aws_vpc.my_app.id
-    cidr_block = "10.0.6.0/24"
-    availability_zone = "ap-south-1b"
-    map_public_ip_on_launch = false
+    cidr_block = var.db_2_cidr
+    availability_zone = var.db_2_az
+    map_public_ip_on_launch = true
 
     tags = {
       Name ="db_subnet_2"
@@ -240,9 +240,9 @@ resource "aws_security_group" "db_sg" {
 #EC2 Instances
 #Frontend_instances
 resource "aws_instance" "frontend" {
-    count = 2
-  ami  = "ami-0f58b397bc5c1f2e8"
-  instance_type = "t2.micro"
+    count = var.frontend_count
+  ami  = var.ami_id
+  instance_type = var.instance_type
   subnet_id = element(
       [
         aws_subnet.Web_1.id,
@@ -261,9 +261,9 @@ resource "aws_instance" "frontend" {
 
 #Backend_instances
 resource "aws_instance" "backend" {
-    count = 2
-  ami  = "ami-0f58b397bc5c1f2e8"
-  instance_type = "t2.micro"
+    count = var.backend_count
+  ami  = var.ami_id
+  instance_type = var.instance_type
   subnet_id = element(
     [
       aws_subnet.app_1.id,
@@ -281,9 +281,9 @@ resource "aws_instance" "backend" {
 
 #db_instances
 resource "aws_instance" "db_server" {
-    count = 2
-  ami  = "ami-0f58b397bc5c1f2e8"
-  instance_type = "t2.micro"
+    count = var.db_count
+  ami  = var.ami_id
+  instance_type = var.instance_type
   subnet_id =element(
     [
       aws_subnet.db_1.id,
